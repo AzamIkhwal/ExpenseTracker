@@ -26,13 +26,13 @@ class ExpenseController extends Controller
         $userId = auth()->id();
 
         // Daily Data
-        $dailyReportData = Expense::dailyReportData($userId, $filterDate)->get();
+        $dailyReportData = Expense::where('user_id', $userId)->dailyReportData($filterDate)->get();
 
         // Monthly Data
         $startDate = Carbon::parse($filterDate)->startOfMonth();
         $endDate =Carbon::parse($filterDate)->endOfMonth();
 
-        $monthlyReportData = Expense::monthlyReportData($userId, $startDate, $endDate)->get();
+        $monthlyReportData = Expense::where('user_id', $userId)->monthlyReportData($startDate, $endDate)->get();
 
         $totalFood = $monthlyReportData->whereIn('category', ['Food'])->pluck('amount')->sum();
         $totalEntertainment = $monthlyReportData->whereIn('category', ['Entertainment'])->pluck('amount')->sum();
@@ -94,7 +94,7 @@ class ExpenseController extends Controller
         return redirect('/index')->with('message', 'Expense created succesfully!');
     }
 
-    // Delete Expense
+    // Delete Expense Data
     public function delete(Expense $data) {
         $data->delete();
         return back()->with('message', 'Expense deleted successfully!');

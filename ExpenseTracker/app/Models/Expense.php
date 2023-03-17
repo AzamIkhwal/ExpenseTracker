@@ -12,14 +12,14 @@ class Expense extends Model
     use HasFactory;
 
     // Daily Data
-    public function scopeDailyReportData($query, $userId, $filterDate)
+    public function scopeDailyReportData($query, $filterDate)
     {
-        return $query->where('user_id', $userId)->whereDate('date', $filterDate);
+        return $query->whereDate('date', $filterDate);
     }
     // Monthly Data
-    public function scopeMonthlyReportData($query, $userId, $startDate, $endDate)
+    public function scopeMonthlyReportData($query, $startDate, $endDate)
     {
-        return $query->where('user_id', $userId)->whereBetween('date', [$startDate, $endDate]);
+        return $query->whereBetween('date', [$startDate, $endDate]);
     }
 
     // Relationship to User
